@@ -4,7 +4,7 @@
 ```$xslt
 mkdir -p gradleScala
 cd gradleScala
-gradle init --type scala-library --package com.example
+gradle init --type scala-library --package me.example
 ```
 
 ## Build
@@ -19,13 +19,13 @@ id 'application'
 }
 
 application {
-mainClassName = com.example.Application
+mainClassName = me.example.Application
 }
 ```
 
 Add Application Main Object as 
 ```$xslt
-package com.example
+package me.example
 
 object Application extends App {
 println("Hello Mahendra!")
@@ -35,3 +35,36 @@ println("Hello Mahendra!")
 Run Application
 
 `gradle run`
+
+## Publishing
+
+To publish built artifact in maven repository
+
+Step 1) Add Plugin 
+`plugins.id 'maven-publish'`
+Step 2) Define publication artifact
+```$xslt
+publishing {
+    publications {
+        maven(MavenPublication) {
+            // built artifact details
+            groupId = 'me.example'
+            artifactId = 'gradleScala'
+            version = '1.0.1'
+            from componets.java
+        }
+    }
+}
+```
+
+Step 3) (Optional) Publish docs and sources 
+```$xslt
+java {
+    withJavadocJar()
+    withSourcesJar()
+}
+```
+
+Step 4) Publish and PublishLocal
+`gradle publish`
+`gradle publishToMavenLocal`

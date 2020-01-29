@@ -12,7 +12,11 @@ plugins {
 
     // Apply the java-library plugin for API and implementation separation.
     id 'java-library'
+    // To Run Application using run task
     id 'application'
+
+    // To publish built artifact in maven reposity
+    id 'maven-publish'
 }
 
 repositories {
@@ -34,5 +38,26 @@ dependencies {
 }
 
 application {
-    mainClassName = 'com.example.Application'
+    mainClassName = 'me.example.Application'
 }
+
+
+// Ask to release java doc and sources jar as well
+java {
+    withJavadocJar()
+    withSourcesJar()
+}
+// Define publishing artifact details
+publishing {
+    publications {
+        maven(MavenPublication) {
+            // built artifact details
+            groupId = 'me.example'
+            artifactId = 'gradleScala'
+            version = '1.0.1'
+
+            from components.java
+        }
+    }
+}
+
